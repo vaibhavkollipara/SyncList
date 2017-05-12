@@ -14,7 +14,7 @@ Webapp to sync users contact info with friends.
 <p>To run the app intially create a file named sercretconfig.cfg in the folder SyncList and add database uri details and your secret key</p>
 
 #### Install required packages
-`pip install -r requirements.txr`
+`pip install -r requirements.txt`
 
 #### Make Migrations
 `python manage.py db init`
