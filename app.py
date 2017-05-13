@@ -43,8 +43,11 @@ def index():
             username = request.form['username']
             password = request.form['password']
             user = User.query.filter_by(username=username).first()
+            if user == None:
+                return render_template('index.html', loginform=loginform, signupform=signupform, msg_err="Please verify provided details.")
             if sha256_crypt.verify(password, user.password_enc):
                 session['user'] = user.fullname
+                session['uid'] = user.id
                 return redirect(url_for('dashboard'))
             else:
                 return render_template('index.html', loginform=loginform, signupform=signupform, msg_err="Invalid Credentails.Please try again.")
@@ -59,7 +62,17 @@ def index():
 @app.route('/dashboard')
 @login_required
 def dashboard():
-    return render_template('dashboard.html', data=session['user'])
+    user = User.query.get(session['uid'])
+    userslist = user.contactslist.all()
+    return render_template('dashboard.html', userslist=userslist)
+
+
+@app.route('/shared')
+@login_required
+def shared():
+    user = User.query.get(session['uid'])
+    userslist = user.sharedto.all()
+    return render_template('shared.html', userslist=userslist)
 
 
 @app.route('/logout')
