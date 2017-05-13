@@ -1,14 +1,33 @@
+{% from '/include/_formhelper.html' import render_field %}
 {% extends 'base.html'%}
 
 {% block content %}
-    <div class="row" style="margin-top:20px;">
+    <div class="row bottom-gap"  style="margin-top:20px;">
+        <div class="col-sm-10 col-md-6 col-md-offset-3 col-lg-4 col-lg-offset-4 text-center">
+                <form class="form-horizontal" method="post" action="/request">
+                    {{ requestform.csrf_token }}
+                <div class="row">
+                    <div class="col-xs-10 col-xs-offset-1 col-sm-7 col-md-7 col-lg-7">
+                        {{ render_field(requestform.username) }}
+                    </div>
+                    <div class="col-xs-10 col-xs-offset-1 col-sm-3 col-md-3 col-lg-3">
+                        {{ render_field(requestform.request) }}
+                    </div>
+                </div>
+                </form>
+
+        </div>
+
+    </div>
+
+    <div class="row">
         <div class="col-sm-10 col-sm-offset-1 col-md-6 col-md-offset-3 col-lg-4 col-lg-offset-4 text-center">
-            <h3 class="well text-center">Shared List</h3>
+            <h4 class="well text-center">Sent Requests</h4>
         </div>
     </div>
     {% if userslist|length == 0 %}
     <div class="row text-center">
-        <h3>You have not contacts</h3>
+        <h4>You don't have any requests waiting for approval</h4>
     </div>
     {% endif %}
     {% if userslist|length > 0 %}
@@ -20,8 +39,17 @@
                             {{ user.fullname[0] }}
                         </div>
                     </div>
-                    <div class="name-box col-md-9 col-lg-9 text-center">
+                    <div class="name-box col-md-7 col-lg-7 text-center">
                         {{ user.fullname }}
+                    </div>
+                    <div class="col-md-2 col-lg-2" style="margin-top:15px;">
+                        <form method="post" action="/request">
+                                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                                <input type="hidden" name="uid" value="{{user.id}}"/>
+                                <button data-toggle="tooltip" data-placement="top" title="Cancle Request" type="submit" name="cancle" class="btn btn-danger">
+                                    <span class="glyphicon glyphicon-remove"></span>
+                                </button>
+                            </form>
                     </div>
 
                 </div>
@@ -31,7 +59,7 @@
                             {{ user.fullname[0] }}
                         </div>
                     </div>
-                    <div class="name-box col-xs-8 col-xs-offset-1 col-sm-8 col-sm-offset-1 text-center">
+                    <div  class="name-box col-xs-8 col-xs-offset-1 col-sm-8 col-sm-offset-1 text-center">
                         {{ user.fullname }}
                     </div>
                 </div>

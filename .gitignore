@@ -31,3 +31,4 @@ venv
 
 #Private Config Details
 secretconfig.cfg
+/templates/display.html

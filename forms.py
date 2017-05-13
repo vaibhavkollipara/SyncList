@@ -6,28 +6,33 @@ from models import User, UserDetails
 
 
 class LoginForm(FlaskForm):
-    username = StringField('Username', validators=[InputRequired(message="Username required")])
-    password = PasswordField('Password', validators=[InputRequired(message="Password required")])
+    username = StringField('Username', validators=[InputRequired(message="Username required")], render_kw={"placeholder": "username", "autofocus": "true"})
+    password = PasswordField('Password', validators=[InputRequired(message="Password required")], render_kw={"placeholder": "password"})
     login = SubmitField('Login')
 
 
 class SignUpForm(FlaskForm):
-    firstname = StringField('First Name', validators=[InputRequired(message="First Name Required"), Length(min=3, max=20, message="3 < no. of charactes < 20")])
-    lastname = StringField('Last Name', validators=[InputRequired(message="First Name Required"), Length(min=3, max=20, message="3 < no. of charactes < 20")])
+    firstname = StringField('First Name', validators=[InputRequired(message="First Name Required"), Length(min=3, max=20, message="3 < no. of characters < 20")], render_kw={"placeholder": "First Name", "autofocus": "true"})
+    lastname = StringField('Last Name', validators=[InputRequired(message="First Name Required"), Length(min=3, max=20, message="3 < no. of characters < 20")], render_kw={"placeholder": "Last Name"})
     email = StringField('Email', validators=[InputRequired(message="Email Required"), Email(),
                                              Unique(
         UserDetails,
         UserDetails.email,
         message='Email already Registered.'
     )
-    ])
-    username = StringField('Username', validators=[InputRequired(message="Username required"), Length(min=3, max=20, message="3 < no. of charactes < 20"),
+    ], render_kw={"placeholder": "email"})
+    username = StringField('Username', validators=[InputRequired(message="Username required"), Length(min=3, max=20, message="3 < no. of characters < 20"),
                                                    Unique(
         User,
         User.username,
         message='Username already taken.')
-    ])
-    password = PasswordField('Password', validators=[InputRequired(message="Password required"), Length(min=6, max=20, message="6 < no. of charactes < 20")])
+    ], render_kw={"placeholder": "Username"})
+    password = PasswordField('Password', validators=[InputRequired(message="Password required"), Length(min=6, max=20, message="6 < no. of characters < 20")], render_kw={"placeholder": "Password"})
 
-    confirm = PasswordField('Cofirm Password', validators=[InputRequired(message="Confirm password required"), Length(min=6, max=20, message="6 < no. of charactes < 20"), EqualTo('password', message="Passwords do not match")])
+    confirm = PasswordField('Cofirm Password', validators=[InputRequired(message="Confirm password required"), Length(min=6, max=20, message="6 < no. of characters < 20"), EqualTo('password', message="Passwords do not match")], render_kw={"placeholder": "Confirm Password"})
     signup = SubmitField('SignUp')
+
+
+class RequestForm(FlaskForm):
+    username = StringField('username', validators=[InputRequired(message="please enter a username"), Length(min=3, max=20, message="3< no. of characters < 20")], render_kw={"placeholder": "username"})
+    request = SubmitField('Request')

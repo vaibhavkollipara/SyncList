@@ -14,13 +14,15 @@
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       {% if session.get('user') != None %}
       <ul class="nav navbar-nav">
-        <li><a href="/" data-toggle="tooltip" data-placement="bottom" title="view your contacts">Home <span class="sr-only">(current)</span></a></li>
-        <li><a href="/shared" data-toggle="tooltip" data-placement="bottom" title="view people who has your contact">Shared</a></li>
+        <li><a href="/" data-toggle="tooltip" data-placement="bottom" title="view your contacts"><span class="glyphicon glyphicon-home"></span>&nbsp;&nbsp;Home <span class="sr-only">(current)</span></a></li>
+        <li><a href="/request" data-toggle="tooltip" data-placement="bottom" title="send new request"><span class="glyphicon glyphicon-send"></span>&nbsp;&nbsp;Request</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-          <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{{session['user']}}&nbsp;<span class="caret"></span></a>
+          <li><a href="/pending" data-toggle="tooltip" data-placement="bottom" title="view received requests"><span class="glyphicon glyphicon-hourglass"></span>&nbsp;&nbsp;Pending</a></li>
+          <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><span class="glyphicon glyphicon-user"></span>&nbsp;&nbsp;{{session['user']}}&nbsp;<span class="caret"></span></a>
               <ul class="dropdown-menu" role="menu">
-                <li><a href="{{url_for('logout')}}">Logout</a></li>
+                <li><a href="#"><span class="glyphicon glyphicon-info-sign"></span>&nbsp;&nbsp;View Profile</a></li>
+                <li><a href="{{url_for('logout')}}"><span style="color:red;" class="glyphicon glyphicon-off"></span>&nbsp;&nbsp;Logout</a></li>
               </ul>
           </li>
       </ul>

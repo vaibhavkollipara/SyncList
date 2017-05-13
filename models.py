@@ -24,15 +24,18 @@ class User(db.Model):
 
   __tablename__ = 'User'
   id = db.Column(db.Integer, primary_key=True)
-  username = db.Column(db.String(20), unique=True)
+  username = db.Column(db.String(length=20), unique=True)
   password_enc = db.Column(db.String(255))
   details = db.relationship("UserDetails", uselist=False, backref="user")
+
+  #Requests received
   requestlist = db.relationship('User',
                                 secondary=requests,
                                 primaryjoin=(requests.c.to_id == id),
                                 secondaryjoin=(requests.c.from_id == id),
                                 lazy='dynamic')
 
+  #Requests sent
   requested = db.relationship('User',
                               secondary=requests,
                               primaryjoin=(requests.c.from_id == id),
