@@ -2,7 +2,7 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField
 from wtforms.validators import InputRequired, Length, Email, EqualTo
 from validators import Unique
-from models import User, UserDetails
+from models import User, UserDetails, Number
 
 
 class LoginForm(FlaskForm):
@@ -36,3 +36,15 @@ class SignUpForm(FlaskForm):
 class RequestForm(FlaskForm):
     username = StringField('username', validators=[InputRequired(message="please enter a username"), Length(min=3, max=20, message="3< no. of characters < 20")], render_kw={"placeholder": "username"})
     request = SubmitField('Request')
+
+
+class PhoneForm(FlaskForm):
+    tag = StringField('Tag', validators=[InputRequired(message="Tag required")], render_kw={"placeholder": "tag"})
+    number = StringField('Tag', validators=[InputRequired(message="Number required"), Length(min=10, max=10, message="should have 10 digits only"),
+                                            Unique(
+        Number,
+        Number.number,
+        message='Number already Registered.'
+    )
+    ], render_kw={"placeholder": "number"})
+    add = SubmitField('Add Number')
