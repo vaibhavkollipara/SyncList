@@ -28,14 +28,14 @@ class User(db.Model):
   password_enc = db.Column(db.String(255))
   details = db.relationship("UserDetails", uselist=False, backref="user")
 
-  #Requests received
+  # Requests received
   requestlist = db.relationship('User',
                                 secondary=requests,
                                 primaryjoin=(requests.c.to_id == id),
                                 secondaryjoin=(requests.c.from_id == id),
                                 lazy='dynamic')
 
-  #Requests sent
+  # Requests sent
   requested = db.relationship('User',
                               secondary=requests,
                               primaryjoin=(requests.c.from_id == id),

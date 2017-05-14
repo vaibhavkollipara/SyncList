@@ -75,7 +75,14 @@ def index():
 def dashboard():
     user = User.query.get(session['uid'])
     userslist = user.contactslist.all()
-    return render_template('dashboard.html', userslist=userslist)
+    if request.args.get('msg_suc'):
+        return render_template('dashboard.html', userslist=userslist, msg_suc=request.args.get('msg_suc'))
+    elif request.args.get('msg_info'):
+        return render_template('dashboard.html', userslist=userslist, msg_info=request.args.get('msg_info'))
+    elif request.args.get('msg_err'):
+        return render_template('dashboard.html', userslist=userslist, msg_err=request.args.get('msg_err'))
+    else:
+        return render_template('dashboard.html', userslist=userslist)
 
 
 @app.route('/request', methods=['GET', 'POST'])
@@ -157,6 +164,37 @@ def userdetails():
         else:
             return render_template('user.html', user=req_user)
 
+    elif request.form.get('deletecontact') != None:
+        req_user = User.query.get(int(request.form.get('did')))
+        user.contactslist.remove(req_user)
+        req_user.contactslist.remove(user)
+        db.session.commit()
+        return redirect(url_for('dashboard', msg_suc="{} removed from your contacts.".format(req_user.fullname)))
+
+
+@app.route('/profile', methods=['GET', 'POST'])
+def profile():
+    phoneform = PhoneForm()
+    user = User.query.get(session['uid'])
+
+    if request.method == "GET":
+        return render_template('profile.html', user=user, phoneform=phoneform)
+
+    elif request.method == "POST":
+        if request.form.get('numdelete') != None:
+            num = Number.query.get(int(request.form.get('nid')))
+            db.session.delete(num)
+            db.session.commit()
+            return render_template('profile.html', user=user, phoneform=phoneform, msg_suc="Number Deleted")
+        elif phoneform.validate_on_submit() and phoneform.add.data:
+            tag = str(request.form.get('tag'))
+            number = str(request.form.get('number'))
+            user.details.numbers.append(Number(tag=tag, number=number))
+            db.session.commit()
+            return render_template('profile.html', user=user, phoneform=phoneform, msg_suc="New Number Added")
+        else:
+            return render_template('profile.html', user=user, phoneform=phoneform, msg_err="Problem Adding New Number")
+
 
 @app.route('/logout')
 def logout():
@@ -165,4 +203,4 @@ def logout():
 
 
 if __name__ == '__main__':
-    app.run()
+    app.run(host="0.0.0.0")

@@ -1,4 +1,4 @@
-{% macro render_field(field, label_visible=true) -%}
+{% macro render_field(field, label_visible=true,value=None) -%}
      <div class="form-group {% if field.errors %}has-error{% endif %} {{ kwargs.pop('class_', '') }}">
         <!-- {% if field.type != 'HiddenField' and field.type != 'SubmitField' and label_visible %}
             <label for="{{ field.id }}" class="control-label">{{ field.label }}</label>
