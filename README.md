@@ -4,6 +4,7 @@ Webapp to sync users contact info with friends.
 ### Technologies
 * Python 3
 * Flask
+* SQLAlchemy
 * PostgreSQL
 * HTML
 * CSS
