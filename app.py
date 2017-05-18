@@ -48,7 +48,7 @@ def index():
             user.details = UserDetails(first_name=first_name, last_name=last_name, email=email)
             db.session.add(user)
             db.session.commit()
-            return render_template('display.html', data="{} : {} : {} : {} : {}".format(first_name, last_name, email, username, password), msg_suc="SignUp Successful")
+            return render_template('index.html', loginform=loginform, signupform=signupform, msg_suc="SignUp Successful.")
 
         elif loginform.validate_on_submit() and loginform.login.data:
             username = request.form['username']
